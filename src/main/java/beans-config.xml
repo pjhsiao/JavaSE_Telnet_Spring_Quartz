@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<!-- 定義job Bean -->
+    <bean id="pttTelnetJob"  class="org.springframework.scheduling.quartz.JobDetailBean" >
+	   <property name="jobClass">
+       		<value>com.commonsnet.hsiao.quartz.job.PttTelnetJob</value> 
+        </property> 
+    </bean>
+    
+    <!-- 開發用即時測試 (即時啟動) 定義 job Bean 時間 -->
+	<bean id="realTimeTriggerBean"   class="org.springframework.scheduling.quartz.SimpleTriggerBean" >
+        <property name="jobDetail">
+            <ref bean="pttTelnetJob"/>
+        </property>
+        <property name="repeatInterval">
+            <value>100000</value>
+        </property>
+        <property name="startDelay">
+            <value>0</value>
+        </property> 
+    </bean>
+    <!-- 固定時間  job Bean  每天06:30發動 -->
+    <bean id="fixTriggerBean"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="pttTelnetJob"/>
+ 		<property name="cronExpression" value="0 30 6 * * ?" />  
+	</bean>
+    
+	<!-- 排程啟動列表 -->
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" >
+        <property name="triggers">
+            <list>
+<!-- 	           	<ref bean="realTimeTriggerBean" />  -->
+	           	<ref bean="fixTriggerBean" /> 
+            </list>
+        </property>
+    </bean>
+	
+	
+</beans> 
