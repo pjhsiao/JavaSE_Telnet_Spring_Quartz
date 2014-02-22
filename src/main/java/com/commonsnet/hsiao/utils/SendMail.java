@@ -89,8 +89,8 @@ public class SendMail {
 	  props.setProperty("mail.smtp.port", "465");
 	  props.setProperty("mail.smtp.socketFactory.port", "465");
 	  props.put("mail.smtp.auth", "true");
-	  final String username = “sender_username”;
-	  final String password = “sender_passowrd”;
+	  final String username = "sender_username";
+	  final String password = "sender_passowrd";
 	  Session session = Session.getDefaultInstance(props, new Authenticator(){
 	      protected PasswordAuthentication getPasswordAuthentication() {
 	          return new PasswordAuthentication(username, password);
